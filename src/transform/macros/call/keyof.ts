@@ -1,3 +1,4 @@
+// @ts-ignore
 import ts, { addRange, factory, PropertyAccessExpression } from "typescript";
 import { TransformState } from "../../../class/transformState";
 import { formatTransformerDiagnostic } from "../../../util/shared";
@@ -18,10 +19,10 @@ export const KeysOfMacro: CallMacro = {
 			}
 		} else if (typeArguments) {
 			const [typeArgument] = typeArguments;
-            const typeSymbol = state.typeChecker.getSymbolAtLocation(typeArgument);
-            console.log(typeArgument.kind)
+			const typeSymbol = state.typeChecker.getSymbolAtLocation(typeArgument);
+			console.log(typeArgument.kind);
 
-            if (typeSymbol !== undefined && typeSymbol.valueDeclaration) {
+			if (typeSymbol !== undefined && typeSymbol.valueDeclaration) {
 				console.log(typeSymbol.valueDeclaration.getText());
 			}
 		}
