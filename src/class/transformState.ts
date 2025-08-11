@@ -84,6 +84,7 @@ export class TransformState {
 		const symbol = this.typeChecker.getSymbolAtLocation(node);
 
 		if (symbol && followAlias) {
+			// @ts-ignore
 			return ts.skipAlias(symbol, this.typeChecker);
 		} else {
 			return symbol;

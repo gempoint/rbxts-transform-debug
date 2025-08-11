@@ -1,3 +1,4 @@
+// @ts-ignore
 import ts, { addRange, factory, PropertyAccessExpression } from "typescript";
 import { TransformState } from "../../../class/transformState";
 import { formatTransformerDiagnostic } from "../../../util/shared";
@@ -22,6 +23,7 @@ export const NameOfMacro: CallMacro = {
 			} else {
 				if (ts.isTypeReferenceNode(type)) {
 					return factory.createStringLiteral(type.getText());
+					// @ts-ignore
 				} else if (ts.isKeyword(type.kind)) {
 					return factory.createStringLiteral(type.getText());
 				} else {
@@ -36,17 +38,21 @@ export const NameOfMacro: CallMacro = {
 				return factory.createStringLiteral(argument.text);
 			} else if (ts.isPropertyAccessExpression(argument)) {
 				return factory.createStringLiteral(argument.name.getText());
+				// @ts-ignore
 			} else if (ts.isThis(argument)) {
 				const symbol = state.typeChecker.getSymbolAtLocation(argument);
 				const valueDeclaration = symbol?.valueDeclaration;
 
 				if (valueDeclaration) {
 					if (ts.isClassDeclaration(valueDeclaration)) {
-						return factory.createStringLiteral(valueDeclaration.name?.text ?? "<anonymous>");	
+						return factory.createStringLiteral(valueDeclaration.name?.text ?? "<anonymous>");
 					}
 				}
 
-				throw formatTransformerDiagnostic("$nameof(this) - this can only be used within a class context", argument);
+				throw formatTransformerDiagnostic(
+					"$nameof(this) - this can only be used within a class context",
+					argument,
+				);
 			} else if (ts.isStringLiteral(argument)) {
 				return argument;
 			} else {
